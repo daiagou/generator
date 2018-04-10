@@ -15,10 +15,10 @@
  */
 package org.mybatis.generator.codegen.mybatis3;
 
+import org.mybatis.generator.api.IntrospectedColumn;
+
 import static org.mybatis.generator.internal.util.StringUtility.escapeStringForJava;
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-
-import org.mybatis.generator.api.IntrospectedColumn;
 
 /**
  * The Class MyBatis3FormattingUtilities.
@@ -61,6 +61,30 @@ public class MyBatis3FormattingUtilities {
 
         sb.append("#{"); //$NON-NLS-1$
         sb.append(introspectedColumn.getJavaProperty(prefix));
+        sb.append(",jdbcType="); //$NON-NLS-1$
+        sb.append(introspectedColumn.getJdbcTypeName());
+
+        if (stringHasValue(introspectedColumn.getTypeHandler())) {
+            sb.append(",typeHandler="); //$NON-NLS-1$
+            sb.append(introspectedColumn.getTypeHandler());
+        }
+
+        sb.append('}');
+
+        return sb.toString();
+    }
+
+    /**
+     * selectPage,selectCount专用
+     * @param introspectedColumn
+     * @return
+     */
+    public static String getParameterPageClause(
+            IntrospectedColumn introspectedColumn) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("#{record."); //$NON-NLS-1$
+        sb.append(introspectedColumn.getJavaProperty(null));
         sb.append(",jdbcType="); //$NON-NLS-1$
         sb.append(introspectedColumn.getJdbcTypeName());
 

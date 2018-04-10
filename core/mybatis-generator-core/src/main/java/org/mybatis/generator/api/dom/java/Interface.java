@@ -15,14 +15,14 @@
  */
 package org.mybatis.generator.api.dom.java;
 
-import static org.mybatis.generator.api.dom.OutputUtilities.calculateImports;
-import static org.mybatis.generator.api.dom.OutputUtilities.newLine;
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
+import static org.mybatis.generator.api.dom.OutputUtilities.calculateImports;
+import static org.mybatis.generator.api.dom.OutputUtilities.newLine;
+import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 
 /**
  * The Class Interface.
@@ -100,6 +100,13 @@ public class Interface extends InnerInterface implements CompilationUnit {
             sb.append(importString);
             newLine(sb);
         }
+
+
+        sb.append("import org.apache.ibatis.annotations.Param;");
+        newLine(sb);
+        sb.append("import org.springframework.data.domain.Pageable;");
+        newLine(sb);
+
 
         if (importStrings.size() > 0) {
             newLine(sb);

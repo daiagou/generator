@@ -15,29 +15,16 @@
  */
 package org.mybatis.generator.api;
 
-import static org.mybatis.generator.internal.util.StringUtility.isTrue;
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import org.mybatis.generator.config.Context;
-import org.mybatis.generator.config.GeneratedKey;
-import org.mybatis.generator.config.JavaClientGeneratorConfiguration;
-import org.mybatis.generator.config.JavaModelGeneratorConfiguration;
-import org.mybatis.generator.config.ModelType;
-import org.mybatis.generator.config.PropertyHolder;
-import org.mybatis.generator.config.PropertyRegistry;
-import org.mybatis.generator.config.SqlMapGeneratorConfiguration;
-import org.mybatis.generator.config.TableConfiguration;
+import org.mybatis.generator.config.*;
 import org.mybatis.generator.internal.rules.ConditionalModelRules;
 import org.mybatis.generator.internal.rules.FlatModelRules;
 import org.mybatis.generator.internal.rules.HierarchicalModelRules;
 import org.mybatis.generator.internal.rules.Rules;
+
+import java.util.*;
+
+import static org.mybatis.generator.internal.util.StringUtility.isTrue;
+import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 
 /**
  * Base class for all code generator implementations. This class provides many
@@ -87,6 +74,8 @@ public abstract class IntrospectedTable {
         ATTR_UPDATE_BY_EXAMPLE_WITH_BLOBS_STATEMENT_ID,
         ATTR_UPDATE_BY_PRIMARY_KEY_STATEMENT_ID,
         ATTR_UPDATE_BY_PRIMARY_KEY_SELECTIVE_STATEMENT_ID,
+        ATTR_SELECT_PAGE_STATEMENT_ID,//selectPage
+        ATTR_SELECT_COUNT_STATEMENT_ID,//selectCount
         ATTR_UPDATE_BY_PRIMARY_KEY_WITH_BLOBS_STATEMENT_ID,
         ATTR_BASE_RESULT_MAP_ID,
         ATTR_RESULT_MAP_WITH_BLOBS_ID,
@@ -541,6 +530,8 @@ public abstract class IntrospectedTable {
         setUpdateByExampleWithBLOBsStatementId("updateByExampleWithBLOBs"); //$NON-NLS-1$
         setUpdateByPrimaryKeyStatementId("updateByPrimaryKey"); //$NON-NLS-1$
         setUpdateByPrimaryKeySelectiveStatementId("updateByPrimaryKeySelective"); //$NON-NLS-1$
+        setSelectPageStatementId("selectPage"); //selectPage
+        setSelectCountStatementId("selectCount"); //selectCount
         setUpdateByPrimaryKeyWithBLOBsStatementId("updateByPrimaryKeyWithBLOBs"); //$NON-NLS-1$
         setBaseResultMapId("BaseResultMap"); //$NON-NLS-1$
         setResultMapWithBLOBsId("ResultMapWithBLOBs"); //$NON-NLS-1$
@@ -588,6 +579,18 @@ public abstract class IntrospectedTable {
         internalAttributes
                 .put(
                         InternalAttribute.ATTR_UPDATE_BY_PRIMARY_KEY_SELECTIVE_STATEMENT_ID,
+                        s);
+    }
+    public void setSelectPageStatementId(String s) {
+        internalAttributes
+                .put(
+                        InternalAttribute.ATTR_SELECT_PAGE_STATEMENT_ID,
+                        s);
+    }
+    public void setSelectCountStatementId(String s) {
+        internalAttributes
+                .put(
+                        InternalAttribute.ATTR_SELECT_COUNT_STATEMENT_ID,
                         s);
     }
 
@@ -698,6 +701,14 @@ public abstract class IntrospectedTable {
     public String getUpdateByPrimaryKeySelectiveStatementId() {
         return internalAttributes
                 .get(InternalAttribute.ATTR_UPDATE_BY_PRIMARY_KEY_SELECTIVE_STATEMENT_ID);
+    }
+    public String getSelectPageStatementId() {
+        return internalAttributes
+                .get(InternalAttribute.ATTR_SELECT_PAGE_STATEMENT_ID);
+    }
+    public String getSelectCountStatementId() {
+        return internalAttributes
+                .get(InternalAttribute.ATTR_SELECT_COUNT_STATEMENT_ID);
     }
 
     public String getUpdateByPrimaryKeyStatementId() {

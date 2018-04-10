@@ -15,12 +15,15 @@
  */
 package org.mybatis.generator.api.dom.java;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 
 import org.mybatis.generator.api.dom.OutputUtilities;
+
+import static org.mybatis.generator.api.dom.OutputUtilities.newLine;
 
 /**
  * The Class Method.
@@ -304,6 +307,26 @@ public class Method extends JavaElement {
 
         return sb.toString();
     }
+
+
+    public String getSelectPage(){
+        StringBuilder sb = new StringBuilder();
+        newLine(sb);
+        int index = getReturnType().getFullyQualifiedName().lastIndexOf('.');
+        String typeName = getReturnType().getFullyQualifiedName().substring(index + 1);
+        sb.append(MessageFormat.format("    List<{0}> selectPage(@Param(\"record\"){1} record, @Param(\"pageable\")Pageable pageable);",typeName,typeName));
+        return  sb.toString();
+    }
+
+    public String getSelectCount(){
+        StringBuilder sb = new StringBuilder();
+        newLine(sb);
+        int index = getReturnType().getFullyQualifiedName().lastIndexOf('.');
+        String typeName = getReturnType().getFullyQualifiedName().substring(index + 1);
+        sb.append(MessageFormat.format("    int selectCount(@Param(\"record\"){0} record);",typeName));
+        return  sb.toString();
+    }
+
 
     /**
      * Checks if is constructor.

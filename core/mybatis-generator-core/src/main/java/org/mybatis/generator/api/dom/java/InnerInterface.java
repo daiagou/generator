@@ -15,16 +15,12 @@
  */
 package org.mybatis.generator.api.dom.java;
 
+import org.mybatis.generator.api.dom.OutputUtilities;
+
+import java.util.*;
+
 import static org.mybatis.generator.api.dom.OutputUtilities.javaIndent;
 import static org.mybatis.generator.api.dom.OutputUtilities.newLine;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.mybatis.generator.api.dom.OutputUtilities;
 
 /**
  * The Class Interface.
@@ -137,15 +133,34 @@ public class InnerInterface extends JavaElement {
             OutputUtilities.newLine(sb);
         }
 
+        String returnType = "";
         Iterator<Method> mtdIter = getMethods().iterator();
         while (mtdIter.hasNext()) {
             newLine(sb);
             Method method = mtdIter.next();
+            if(method.getReturnType().getFullyQualifiedName().contains("com.")&&returnType.equals("")){
+                returnType = method.getReturnType().getFullyQualifiedName();//获取方法返回类型。
+            }
             sb.append(method.getFormattedContent(indentLevel, true, compilationUnit));
             if (mtdIter.hasNext()) {
                 newLine(sb);
             }
         }
+
+
+        //添加selectPage
+        Method selectPage = new Method("selectPage");
+        FullyQualifiedJavaType selectPageReturnType = new FullyQualifiedJavaType(returnType);
+        selectPage.setReturnType(selectPageReturnType);
+        newLine(sb);
+        sb.append(selectPage.getSelectPage());
+        //selectCount
+        Method selectCount = new Method("selectCount");
+        FullyQualifiedJavaType selectCountReturnType = new FullyQualifiedJavaType(returnType);
+        selectPage.setReturnType(selectCountReturnType);
+        newLine(sb);
+        sb.append(selectPage.getSelectCount());
+
 
         if (innerInterfaces.size() > 0) {
             newLine(sb);
